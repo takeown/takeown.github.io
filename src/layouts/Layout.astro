@@ -6,7 +6,7 @@ type Props = {
 
 const {
   title = "takeown.github.io",
-  description = "A personal site and blog for notes, builds, and technical records.",
+  description = "개발 기록, 실험, 생각을 남기는 개인 사이트.",
 } = Astro.props;
 
 const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
@@ -15,7 +15,7 @@ const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
 ---
 
 <!doctype html>
-<html lang="en">
+<html lang="ko">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width" />
@@ -29,9 +29,9 @@ const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
     <div class="site-shell">
       <header class="site-header">
         <a class="brand" href="/">takeown</a>
-        <nav class="site-nav" aria-label="Primary navigation">
-          <a class:list={[{ active: isHome }]} href="/">Home</a>
-          <a class:list={[{ active: isBlog }]} href="/blog/">Blog</a>
+        <nav class="site-nav" aria-label="주요 내비게이션">
+          <a class:list={[{ active: isHome }]} href="/">홈</a>
+          <a class:list={[{ active: isBlog }]} href="/blog/">블로그</a>
         </nav>
       </header>
 
