@@ -1,38 +1,47 @@
 ---
-import { posts, type BlogPost } from "../../data/posts";
+import { getCollection, render, type CollectionEntry } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
 
-export function getStaticPaths() {
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+
   return posts.map((post) => ({
-    params: { slug: post.slug },
+    params: { slug: post.id },
     props: { post },
   }));
 }
 
 type Props = {
-  post: BlogPost;
+  post: CollectionEntry<"blog">;
 };
 
 const { post } = Astro.props;
+const { Content } = await render(post);
+
+const dateFormatter = new Intl.DateTimeFormat("ko-KR", {
+  dateStyle: "long",
+});
 ---
 
 <Layout
-  title={`${post.title} | takeown.github.io`}
-  description={post.summary}
+  title={`${post.data.title} | takeown.github.io`}
+  description={post.data.summary}
 >
   <article class="post-page">
     <header class="post-header">
       <a class="back-link" href="/blog/">블로그로 돌아가기</a>
       <div class="post-meta">
-        <span>{post.tag}</span>
-        <time datetime={post.dateTime}>{post.date}</time>
+        <span>{post.data.tag}</span>
+        <time datetime={post.data.date.toISOString()}>
+          {dateFormatter.format(post.data.date)}
+        </time>
       </div>
-      <h1>{post.title}</h1>
-      <p class="post-summary">{post.summary}</p>
+      <h1>{post.data.title}</h1>
+      <p class="post-summary">{post.data.summary}</p>
     </header>
 
     <div class="post-content">
-      {post.body.map((paragraph) => <p>{paragraph}</p>)}
+      <Content />
     </div>
   </article>
 </Layout>

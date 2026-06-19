@@ -1,0 +1,13 @@
+---
+const pathname = Astro.url.pathname.replace(/\/+$/, "") || "/";
+const isHome = pathname === "/";
+const isBlog = pathname === "/blog" || pathname.startsWith("/blog/");
+---
+
+<header class="site-header">
+  <a class="brand" href="/">takeown</a>
+  <nav class="site-nav" aria-label="주요 내비게이션">
+    <a class:list={[{ active: isHome }]} href="/">홈</a>
+    <a class:list={[{ active: isBlog }]} href="/blog/">블로그</a>
+  </nav>
+</header>

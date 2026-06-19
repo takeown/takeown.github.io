@@ -1,6 +1,14 @@
 ---
-import { posts } from "../../data/posts";
+import { getCollection } from "astro:content";
 import Layout from "../../layouts/Layout.astro";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+
+const dateFormatter = new Intl.DateTimeFormat("ko-KR", {
+  dateStyle: "long",
+});
 ---
 
 <Layout
@@ -22,13 +30,15 @@ import Layout from "../../layouts/Layout.astro";
         posts.map((post) => (
           <article class="post-item">
             <div class="post-meta">
-              <span>{post.tag}</span>
-              <time datetime={post.dateTime}>{post.date}</time>
+              <span>{post.data.tag}</span>
+              <time datetime={post.data.date.toISOString()}>
+                {dateFormatter.format(post.data.date)}
+              </time>
             </div>
             <h2>
-              <a href={`/blog/${post.slug}/`}>{post.title}</a>
+              <a href={`/blog/${post.id}/`}>{post.data.title}</a>
             </h2>
-            <p>{post.summary}</p>
+            <p>{post.data.summary}</p>
           </article>
         ))
       }
